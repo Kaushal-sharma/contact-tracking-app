@@ -32,26 +32,55 @@ public with sharing class CTLocationTracingController {
     }
 
     public static List<Location_Tracing__c> checkDuplicates(List<Location_Tracing__c> newLocationTracing) {
+        
         Set<Id> locationIds = new Set<Id>();
         Set<Id> personIds = new Set<Id>();
-
-        for(Location_Tracing__c trac : newLocationTracing) {
-            locationIds.add(trac.Location__c);
-            personIds.add(trac.Person__c);
+		Map<Id, Set<Id>> mapForExisting = new Map<Id, Set<Id>>();
+        List<Location_Tracing__c> duplicates = new List<Location_Tracing__c>();
+        
+        AggregateResult[] results  = [SELECT COUNT(Id) Total, Person__c, Location__c FROM Location_Tracing__c GROUP BY Person__c, Location__c HAVING COUNT(Id) > 1];
+        System.debug('findDuplicates: '+ results);
+        
+        for(AggregateResult trace : results) {
+            locationIds.add(String.valueOf(trace.get('Location__c')));
+            personIds.add(String.valueOf(trace.get('Person__c')));
         }
+        SYstem.debug('locationIds: '+ locationIds);
+        System.debug('PersonIds: '+ personIds);
+        
+        List<Location_Tracing__c> locationTracingList = [SELECT Id, Name, Person__c, Location__c FROM Location_Tracing__c WHERE Person__c IN : personIds AND Location__c IN : locationIds ORDER BY CreatedDate DESC];
+        
+        for(Location_Tracing__c trace : locationTracingList) {
+        	duplicates.add(trace);
+        }        
 
-        List<Location_Tracing__c> locationTracingList = [SELECT Id, Person__c, Location__c FROM Location_Tracing__c WHERE Person__c IN : personIds AND Location__c IN : locationIds];
+        /*for(Location_Tracing__c trace : newLocationTracing) {
+            locationIds.add(trace.Location__c);
+            personIds.add(trace.Person__c);
+        }
+        
+        List<Location_Tracing__c> locationTracingList = [SELECT Id, Person__c, Location__c FROM Location_Tracing__c WHERE Person__c IN : personIds AND Location__c IN : locationIds ORDER BY CreatedDate DESC];
 
-        Map<Id, Set<Id>> mapForExisting = new Map<Id, Set<Id>>();
-
-        for(Location_Tracing__c trac : locationTracingList) {
+        System.debug('locationTracingList: '+ locationTracingList);
+        
+        
+        for(Location_Tracing__c trace : locationTracingList) {
             if(locationTracingList.size() > 0){
-                if(!mapForExisting.containsKey(trac.Location__c)){
-                    mapForExisting.put(trac.Location__c, new Set<Id>());
+                if(!mapForExisting.containsKey(trace.Location__c)){
+                    mapForExisting.put(trace.Location__c, new Set<Id>());
                 }
-                mapForExisting.get(trac.Location__c).add(trac.Person__c);
+                mapForExisting.get(trace.Location__c).add(trace.Person__c);
             }
         }
-        return null;
+
+        for(Location_Tracing__c trace : newLocationTracing) {
+            System.debug('=> Location__c: '+trace.Location__c+ ' Person__c: '+mapForExisting.get(trace.Location__c));
+            if(mapForExisting.containsKey(trace.Location__c)) {
+               if(mapForExisting.containsKey(trace.Location__c) && mapForExisting.get(trace.Location__c).contains(trace.Person__c)) {
+                	duplicates.add(trace);
+            	}
+            }
+        }*/
+        return duplicates;
     }
 }
