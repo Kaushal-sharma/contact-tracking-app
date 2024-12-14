@@ -49,17 +49,11 @@ public with sharing class CTPersonController {
         }
     }
 
-    @AuraEnabled
-    public static Map<String, Integer> getHealthStatusCount(){
-        try {
-            Map<String, Integer> healthStatusCount = new Map<String, Integer>();
-            for(AggregateResult result : [SELECT Health_Status__c, COUNT(Id) Total FROM Person__c GROUP BY Health_Status__c]) {
-                //statusCount.put((String)result.get('Health_Status__c'), (Integer)result.get('Total'));
-                healthStatusCount.put(String.valueOf(result.get('Health_Status__c')), Integer.valueOf(result.get('Total')));
-            }
-            return healthStatusCount;
-        } catch (Exception e) {
-            throw new AuraHandledException(e.getMessage());
+    public static Map<String, Integer> getHealthStatusCount() {
+        Map<String, Integer> healthCountMap = new Map<String, Integer>();
+        for(AggregateResult ar : [SELECT Health_Status__c, COUNT(Id) total FROM Person__c GROUP BY Health_Status__c]) {
+            healthCountMap.put(String.valueOf(ar.get('Health_Status__c')), Integer.valueOf(ar.get('total')));
         }
+        return healthCountMap;
     }
 }
