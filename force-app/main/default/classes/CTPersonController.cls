@@ -57,67 +57,78 @@ public with sharing class CTPersonController {
         return healthCountMap;
     }
 
-    public static void getCohabitants(Set<Id> personIds) {
-        Set<String> healthStatus = Set<String>{'Green','Yellow'};
+    public static Set<Id> getCohabitants(Set<Id> personIds, Set<Id> alreadyProcessed) {
+        List<String> healthStatus = new List<String>{'Green','Yellow'};
 
-        List<People_Tracing__c> peopleTracingList = [SELECT Id, Name, Person_1__c, Person_2__c, Contact_Type__c FROM People_Tracing__c WHERE Person_1__c IN :personIds OR Person_1__c IN : personIds and Contact_Type__c = 'Cohabitant' AND (Person_1__c.Health_Status__c IN :healthStatus OR Person_1__c.Health_Status__c IN : healthStatus)];
+        List<People_Tracing__c> peopleTracingList = [SELECT Id, Name, Person_1__c, Person_2__c, Contact_Type__c FROM People_Tracing__c 
+                                                     WHERE (Person_1__c IN :personIds OR Person_2__c IN : personIds) 
+                                                     AND Contact_Type__c = 'Cohabitant' 
+                                                     AND (Person_1__r.Health_Status__c IN :healthStatus OR Person_2__r.Health_Status__c IN : healthStatus)];
 
         Set<Id> cohabitants = new Set<Id>();
         for(People_Tracing__c pt : peopleTracingList) {
-            if(personIds.contains(pt.Person_1__c)) {
+            if(!alreadyProcessed.contains(pt.Person_1__c)) {
                 cohabitants.add(pt.Person_1__c);
+                alreadyProcessed.add(pt.Person_1__c);
             }
-            if(personIds.contains(pt.Person_2__c)) {
+            if(!alreadyProcessed.contains(pt.Person_2__c)) {
                 cohabitants.add(pt.Person_2__c);
+                alreadyProcessed.add(pt.Person_2__c);
             }
         }
         return cohabitants;
     }
+    
+    public static Set<Id> getNeighbours(Set<Id> personIds, Set<Id> alreadyProcessed) {
 
-    public static void getNeighbours(Set<Id> personIds) {
-
-        List<People_Tracing__c> peopleTracingList = [SELECT Id, Name, Person_1__c, Person_2__c, Contact_Type__c FROM People_Tracing__c WHERE Person_1__c IN :personIds OR Person_1__c IN : personIds and Contact_Type__c = 'Neighbour' AND (Person_1__c.Health_Status__c = 'Green' OR Person_1__c.Health_Status__c = 'Green')];
+        List<People_Tracing__c> peopleTracingList = [SELECT Id, Name, Person_1__c, Person_2__c, Contact_Type__c FROM People_Tracing__c WHERE (Person_1__c IN :personIds OR Person_2__c IN : personIds) AND Contact_Type__c = 'Neighbour' AND (Person_2__r.Health_Status__c = 'Green' OR Person_2__r.Health_Status__c = 'Green')];
 
         Set<Id> neighbours = new Set<Id>();
         for(People_Tracing__c pt : peopleTracingList) {
-            if(personIds.contains(pt.Person_1__c)) {
+            if(!alreadyProcessed.contains(pt.Person_1__c)) {
                 neighbours.add(pt.Person_1__c);
+                alreadyProcessed.add(pt.Person_1__c);
             }
-            if(personIds.contains(pt.Person_2__c)) {
+            if(!alreadyProcessed.contains(pt.Person_2__c)) {
                 neighbours.add(pt.Person_2__c);
+                alreadyProcessed.add(pt.Person_2__c);
             }
         }
         return neighbours;
     }
+    
+    public static Set<Id> getPrimaryContact(Set<Id> personIds, Set<Id> alreadyProcessed) {
+        List<String> healthStatus = new List<String>{'Green','Yellow'};
 
-    public static void getPrimaryContact(Set<Id> personIds) {
-        Set<String> healthStatus = Set<String>{'Green','Yellow'};
-
-        List<People_Tracing__c> peopleTracingList = [SELECT Id, Name, Person_1__c, Person_2__c, Contact_Type__c FROM People_Tracing__c WHERE Person_1__c IN :personIds OR Person_1__c IN : personIds and Contact_Type__c = 'Other' AND Contact_Date__c = LAST_N_DAYS:10 AND (Person_1__c.Health_Status__c IN :healthStatus OR Person_1__c.Health_Status__c IN :healthStatus)];
+        List<People_Tracing__c> peopleTracingList = [SELECT Id, Name, Person_1__c, Person_2__c, Contact_Type__c FROM People_Tracing__c WHERE (Person_1__c IN :personIds OR Person_2__c IN : personIds) AND Contact_Type__c = 'Other' AND Contact_Date__c = LAST_N_DAYS:10 AND (Person_1__r.Health_Status__c IN :healthStatus OR Person_2__r.Health_Status__c IN :healthStatus)];
 
         Set<Id> primaryContact = new Set<Id>();
         for(People_Tracing__c pt : peopleTracingList) {
-            if(personIds.contains(pt.Person_1__c)) {
+            if(!alreadyProcessed.contains(pt.Person_1__c)) {
                 primaryContact.add(pt.Person_1__c);
+                alreadyProcessed.add(pt.Person_1__c);
             }
-            if(personIds.contains(pt.Person_2__c)) {
+            if(!alreadyProcessed.contains(pt.Person_2__c)) {
                 primaryContact.add(pt.Person_2__c);
+                alreadyProcessed.add(pt.Person_2__c);
             }
         }
         return primaryContact;
     }
+    
+    public static Set<Id> getSecondaryContact(Set<Id> personIds, Set<Id> alreadyProcessed) {
 
-    public static void getSecondaryContact(Set<Id> personIds) {
-
-        List<People_Tracing__c> peopleTracingList = [SELECT Id, Name, Person_1__c, Person_2__c, Contact_Type__c FROM People_Tracing__c WHERE Person_1__c IN :personIds OR Person_1__c IN : personIds and Contact_Type__c = 'Other' AND Contact_Date__c = LAST_N_DAYS:10 AND (Person_1__c.Health_Status__c = 'Green' OR Person_1__c.Health_Status__c = 'Green')];
+        List<People_Tracing__c> peopleTracingList = [SELECT Id, Name, Person_1__c, Person_2__c, Contact_Type__c FROM People_Tracing__c WHERE (Person_1__c IN :personIds OR Person_2__c IN : personIds) AND Contact_Type__c = 'Other' AND Contact_Date__c = LAST_N_DAYS:10 AND (Person_1__r.Health_Status__c = 'Green' OR Person_2__r.Health_Status__c = 'Green')];
 
         Set<Id> secondaryContact = new Set<Id>();
         for(People_Tracing__c pt : peopleTracingList) {
-            if(personIds.contains(pt.Person_1__c)) {
+            if(!alreadyProcessed.contains(pt.Person_1__c)) {
                 secondaryContact.add(pt.Person_1__c);
+                alreadyProcessed.add(pt.Person_1__c);
             }
-            if(personIds.contains(pt.Person_2__c)) {
+            if(!alreadyProcessed.contains(pt.Person_2__c)) {
                 secondaryContact.add(pt.Person_2__c);
+                alreadyProcessed.add(pt.Person_2__c);
             }
         }
         return secondaryContact;
