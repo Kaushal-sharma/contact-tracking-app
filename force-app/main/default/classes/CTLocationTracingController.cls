@@ -31,56 +31,46 @@ public with sharing class CTLocationTracingController {
         }
     }
 
-    public static List<Location_Tracing__c> checkDuplicates(List<Location_Tracing__c> newLocationTracing) {
-        
+    public static List<Location_Tracing__c> checkDuplicates(List<Location_Tracing__c> newLocationTraces){
+        // store unique location ids
         Set<Id> locationIds = new Set<Id>();
+        // store unique person Ids
         Set<Id> personIds = new Set<Id>();
-		Map<Id, Set<Id>> mapForExisting = new Map<Id, Set<Id>>();
-        List<Location_Tracing__c> duplicates = new List<Location_Tracing__c>();
-        
-        AggregateResult[] results  = [SELECT COUNT(Id) Total, Person__c, Location__c FROM Location_Tracing__c GROUP BY Person__c, Location__c HAVING COUNT(Id) > 1];
-        System.debug('findDuplicates: '+ results);
-        
-        for(AggregateResult trace : results) {
-            locationIds.add(String.valueOf(trace.get('Location__c')));
-            personIds.add(String.valueOf(trace.get('Person__c')));
-        }
-        SYstem.debug('locationIds: '+ locationIds);
-        System.debug('PersonIds: '+ personIds);
-        
-        List<Location_Tracing__c> locationTracingList = [SELECT Id, Name, Person__c, Location__c FROM Location_Tracing__c WHERE Person__c IN : personIds AND Location__c IN : locationIds ORDER BY CreatedDate DESC];
-        
-        for(Location_Tracing__c trace : locationTracingList) {
-        	duplicates.add(trace);
-        }        
-
-        /*for(Location_Tracing__c trace : newLocationTracing) {
+        for (Location_Tracing__c trace : newLocationTraces) {
             locationIds.add(trace.Location__c);
             personIds.add(trace.Person__c);
         }
-        
-        List<Location_Tracing__c> locationTracingList = [SELECT Id, Person__c, Location__c FROM Location_Tracing__c WHERE Person__c IN : personIds AND Location__c IN : locationIds ORDER BY CreatedDate DESC];
 
-        System.debug('locationTracingList: '+ locationTracingList);
-        
-        
-        for(Location_Tracing__c trace : locationTracingList) {
-            if(locationTracingList.size() > 0){
-                if(!mapForExisting.containsKey(trace.Location__c)){
-                    mapForExisting.put(trace.Location__c, new Set<Id>());
+        // map of location id, set of person ids
+        Map<Id, Set<Id>> mapOfExistingRecords = new Map<Id, Set<Id>>();
+        // location1, [person1, person2]
+        // query existing location tracing records
+        List<Location_Tracing__c> existingRecords = [SELECT Id, Person__c, Location__c FROM Location_Tracing__c WHERE Location__c IN :locationIds AND Person__c IN :personIds];
+
+        // list of duplicate records
+        List<Location_Tracing__c> duplicates = new List<Location_Tracing__c>();
+
+
+        if(existingRecords != null && existingRecords.size() > 0){
+            for (Location_Tracing__c trace : existingRecords) {
+                if(! mapOfExistingRecords.containsKey(trace.Location__c)){
+                    mapOfExistingRecords.put(trace.Location__c, new Set<Id>());
                 }
-                mapForExisting.get(trace.Location__c).add(trace.Person__c);
+                // add person ids to map set
+                mapOfExistingRecords.get(trace.Location__c).add(trace.Person__c);
+            }
+            
+            // loop over new location tracing records
+            for (Location_Tracing__c trace : newLocationTraces) {
+                // first check for location id
+                // if item found in map, then check for person in set
+                if(mapOfExistingRecords.containsKey(trace.Location__c) 
+                    && mapOfExistingRecords.get(trace.Location__c).contains(trace.Person__c)){
+                        duplicates.add(trace);
+                }
             }
         }
 
-        for(Location_Tracing__c trace : newLocationTracing) {
-            System.debug('=> Location__c: '+trace.Location__c+ ' Person__c: '+mapForExisting.get(trace.Location__c));
-            if(mapForExisting.containsKey(trace.Location__c)) {
-               if(mapForExisting.containsKey(trace.Location__c) && mapForExisting.get(trace.Location__c).contains(trace.Person__c)) {
-                	duplicates.add(trace);
-            	}
-            }
-        }*/
         return duplicates;
     }
  
