@@ -1,0 +1,71 @@
+<template>
+    <div class="c-container">
+        <lightning-layout multiple-rows="true">
+           
+            <lightning-layout-item size="12">
+                
+                <div class="slds-p-around_medium lgc-bg">
+                    <lightning-tile label="Contact Tracing" type="media">
+                        <lightning-icon slot="media" icon-name="standard:groups"></lightning-icon>
+                        <p class="slds-truncate" title="7 Members">{tabContent}</p>
+                        <lightning-button label="New" slot="actions"></lightning-button>
+                    </lightning-tile>
+                </div>
+                    <!-- <lightning-button label="New" slot="actions"></lightning-button> -->
+                
+                <lightning-layout class="lgc-bg-white">
+                    <lightning-layout-item flexibility="auto, no-grow" padding="around-small">
+                        <div class="text-green">Green</div>
+                        <div>32</div>
+                    </lightning-layout-item>
+                    <lightning-layout-item flexibility="auto, no-grow" padding="around-small">
+                        <div class="text-yellow">Yellow</div>
+                        <div>34</div>
+                    </lightning-layout-item>
+                    <lightning-layout-item flexibility="auto, no-grow" padding="around-small">
+                        <div class="text-orange">Orange</div>
+                        <div>43</div>
+                    </lightning-layout-item>
+                    <lightning-layout-item flexibility="auto, no-grow" padding="around-small">
+                        <div class="text-red">Red</div>
+                        <div>34</div>
+                    </lightning-layout-item>
+                </lightning-layout> 
+            </lightning-layout-item>
+        </lightning-layout>
+
+        <lightning-layout-item size="12">
+
+                <lightning-tabset variant="vertical">
+                    
+                    <lightning-tab onactive={handleActive} label="Person View" value="person">
+                        <lightning-layout>
+                            <lightning-layout-item size="8" padding="horizontal-small">
+                                Person
+                                <!-- <c:CTRecentChanges scope="person" /> -->
+                            </lightning-layout-item>
+                            <lightning-layout-item size="4" padding="horizontal-small">
+                                Person view
+                                <!-- <c:CTPersonView />  -->
+                            </lightning-layout-item>
+                        </lightning-layout>
+                    </lightning-tab>
+
+                    <lightning-tab onactive={handleActive} label="Location View" value="location">
+                        <lightning-layout>
+                            <lightning-layout-item size="8" padding="horizontal-small">
+                                Location
+                                <!-- <c:CTRecentChanges scope="location" /> -->
+                            </lightning-layout-item>
+                            <lightning-layout-item size="4" padding="horizontal-small"> 
+                                Location View
+                                <!-- <c:CTLocationView />  -->
+                            </lightning-layout-item>
+                        </lightning-layout>
+                    </lightning-tab>
+
+                </lightning-tabset>
+
+            </lightning-layout-item>
+    </div>
+</template>
