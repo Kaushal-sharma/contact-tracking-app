@@ -24,8 +24,9 @@ public with sharing class CTPeopleTracingController {
                 personIds.add(traces.Person_1__c);
                 personIds.add(traces.Person_2__c);
             }
-
             
+            //SELECT Id, Name, Contact_Date__c, Contact_Type__c, Person_1__c, Person_2__c, Person_1__r.Name, Person_2__r.Name FROM People_Tracing__c
+            //This query get those records which matching both personids(person1 and person2)
             List<People_Tracing__c> existingRecords = [SELECT Id, Person_1__c, Person_2__c FROM People_Tracing__c WHERE Person_1__c IN : personIds OR Person_2__c IN : personIds];
 
             if(existingRecords.size() > 0 && existingRecords != null) {

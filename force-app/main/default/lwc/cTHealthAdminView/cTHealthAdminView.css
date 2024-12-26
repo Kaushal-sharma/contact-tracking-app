@@ -10,19 +10,19 @@
     background-color: rgb(255, 255, 255);
 }
 
-.text-green {
+.text-Green {
     color:green;
     font-weight: 600;
 }
-.text-orange {
+.text-Orange {
     color:orange;
     font-weight: 600;
 }
-.text-yellow {
-    color:yellow;
+.text-Yellow {
+    color:rgb(238, 238, 0);
     font-weight: 600;
 }
-.text-red {
+.text-Red {
     color:red;
     font-weight: 600;
 }
