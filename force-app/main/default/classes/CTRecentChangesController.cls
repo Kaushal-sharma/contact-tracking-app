@@ -9,12 +9,12 @@ public with sharing class CTRecentChangesController {
         return CTLocationController.getRecentStatusChanges();
     }
 
-    @AuraEnabled
-    public static List<Person__c> searchPeople(String searchTerm) {
-        return CTPersonController.searchPeople(searchTerm);
+    @AuraEnabled(cacheable=true)
+    public static List<Person__c> serachPerson(String searchTerm) {
+        return CTPersonController.serachPersons(searchTerm);
     }
 
-    @AuraEnabled
+    @AuraEnabled(cacheable=true)
     public static List<Location__c> searchLocation(String searchTerm) {
         return CTLocationController.searchLocations(searchTerm);
     }
