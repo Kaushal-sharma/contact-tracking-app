@@ -12,7 +12,7 @@ const personColumns = [
     { label: "Token", fieldName: "Token__c", type: "text" },
     { label: "Health Status", fieldName: "Health_Status__c", type: "text" },
     { label: "Status Update Date", fieldName: "Status_Update_Date__c", type: "date" },
-    { label: "View", type: "button", initialWidth: 135, typeAttributes: { label: "View/Update", name: "view_details", title: "Click to View Details" } }
+    { label: "View", type: "button", initialWidth: 135, typeAttributes: { label: "View/Update", name: "view_details", title: "Person view" } }
 ]
 
 const locationColumns = [
@@ -22,7 +22,7 @@ const locationColumns = [
     { label: "Pincode", fieldName: "Pincode__c", type: "text" },
     { label: "Address", fieldName: "Address__c", type: "text" },
     { label: "Status Update Date", fieldName: "Status_Update_Date__c", type: "date" },
-    { label: "View", type: "button", initialWidth: 135, typeAttributes: { label: "View/Update", name: "view_details", title: "Click to View Details" } }
+    { label: "View", type: "button", initialWidth: 135, typeAttributes: { label: "View/Update", name: "view_details", title: "Location View" } }
 ]
 
 export default class CTRecentChanges extends LightningElement {
@@ -95,6 +95,17 @@ export default class CTRecentChanges extends LightningElement {
     }
 
     handleRowAction(event) {
+        const action = event.detail.action;
+        const row = event.detail.row;
+        if(action.name == 'view_details') {
+            this.dispatchEvent(new CustomEvent('view', {
+                detail: {
+                    recordId : row.Id,
+                    status : row.Status__c
+                }
+            }))
+        }
+
 
     }
 

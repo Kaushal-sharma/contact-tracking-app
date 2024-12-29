@@ -3,6 +3,6 @@
             <div onkeyup={handleKeyUp} slot="actions">
                 <lightning-input name="search" label="Hit 'enter' to search" aura-id="enter-search" type="search" placeholder="Search here..." onkeyup={handleKeyUp}></lightning-input>
             </div>
-        <lightning-datatable key-field="id" data={data} columns={columns} hide-checkbox-column="true" onrowaction={handleRowAction}></lightning-datatable>
+        <lightning-datatable key-field="Id" data={data} columns={columns} hide-checkbox-column="true" onrowaction={handleRowAction}></lightning-datatable>
     </lightning-card>
 </template>

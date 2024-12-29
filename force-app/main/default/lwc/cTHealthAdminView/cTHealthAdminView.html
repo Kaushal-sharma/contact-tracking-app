@@ -23,13 +23,12 @@
 
                     <lightning-tab onactive={handleActive} label="Location View" value="location">
                         <lightning-layout>
-                            <lightning-layout-item size="12" padding="horizontal-small">
-                                <c-c-t-recent-changes scope="Location"></c-c-t-recent-changes>
+                            <lightning-layout-item size="8" padding="horizontal-small">
+                                <c-c-t-recent-changes scope="Location" onview={viewDetail}></c-c-t-recent-changes>
                             </lightning-layout-item>
-                            <!--lightning-layout-item size="4" padding="horizontal-small"> 
-                                Location View
-                                <c:CTLocationView />
-                            </lightning-layout-item-->
+                            <lightning-layout-item size="4" padding="horizontal-small"> 
+                                <c-c-t-location-view record-id={dataId} record-status={status}></c-c-t-location-view>
+                            </lightning-layout-item>
                         </lightning-layout>
                     </lightning-tab>
 

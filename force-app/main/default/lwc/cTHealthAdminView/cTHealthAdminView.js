@@ -4,6 +4,8 @@ import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 export default class CTHealthAdminView extends LightningElement {
 
     tabName = '';
+    dataId;
+    status;
 
     handleActive(event) {
         const name = event.target.value;
@@ -13,6 +15,14 @@ export default class CTHealthAdminView extends LightningElement {
         } else {
             this.template.querySelector('c-c-t-health-header').getPersonStatus();
         }
+    }
+
+
+    viewDetail(event) {
+        this.dataId = event.detail.recordId;
+        this.status = event.detail.status;
+        console.log('In admin: '+ this.status);
+        this.template.querySelector('c-c-t-location-view').locationStatus();
     }
 
     showMessage(title, msg, variant) {
