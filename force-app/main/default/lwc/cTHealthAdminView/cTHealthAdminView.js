@@ -9,12 +9,10 @@ export default class CTHealthAdminView extends LightningElement {
         const name = event.target.value;
         this.tabName = name.charAt(0).toUpperCase() + String(name).slice(1);
         if(this.tabName == 'Location') {
-            this.template.querySelector('c-c-t-health-header').getPersonStatus();
-        } else {
             this.template.querySelector('c-c-t-health-header').getLocationStatus();
+        } else {
+            this.template.querySelector('c-c-t-health-header').getPersonStatus();
         }
-
-
     }
 
     showMessage(title, msg, variant) {

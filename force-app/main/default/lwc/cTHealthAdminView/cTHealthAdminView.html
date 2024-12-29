@@ -1,5 +1,5 @@
 <template>
-    <div class="c-container">
+    <lightning-card>
         <lightning-layout multiple-rows="true">
             <lightning-layout-item size="12">
                 <c-c-t-health-header tab-name={tabName}></c-c-t-health-header>
@@ -12,8 +12,7 @@
                     <lightning-tab onactive={handleActive} label="Person View" value="person">
                         <lightning-layout>
                             <lightning-layout-item size="8" padding="horizontal-small">
-                                Person
-                                <!-- <c:CTRecentChanges scope="person" /> -->
+                                <c-c-t-recent-changes scope="Person"></c-c-t-recent-changes>
                             </lightning-layout-item>
                             <lightning-layout-item size="4" padding="horizontal-small">
                                 Person view
@@ -25,8 +24,7 @@
                     <lightning-tab onactive={handleActive} label="Location View" value="location">
                         <lightning-layout>
                             <lightning-layout-item size="8" padding="horizontal-small">
-                                Location
-                                <!-- <c:CTRecentChanges scope="location" /> -->
+                                <c-c-t-recent-changes scope="Location"></c-c-t-recent-changes>
                             </lightning-layout-item>
                             <lightning-layout-item size="4" padding="horizontal-small"> 
                                 Location View
@@ -38,5 +36,5 @@
                 </lightning-tabset>
 
             </lightning-layout-item>
-    </div>
+    </lightning-card>
 </template>

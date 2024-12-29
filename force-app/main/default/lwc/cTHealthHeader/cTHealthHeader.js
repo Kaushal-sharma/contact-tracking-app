@@ -23,12 +23,9 @@ export default class CTHealthHeader extends NavigationMixin(LightningElement) {
         }
     }
 
-    connectedCallback() {
-        //this.getPersonStatus();
-    }
-
     @api
     getPersonStatus() {
+        this.healthStatus=[];
         getPersonHealthStatus()
         .then((response) => {
             this.picklist.forEach((item, index) => {
@@ -50,6 +47,7 @@ export default class CTHealthHeader extends NavigationMixin(LightningElement) {
 
     @api
     getLocationStatus() {
+        this.healthStatus = [];
         getLocationHealthStatus()
         .then((response) => {
             this.picklist.forEach((item, index) => {
