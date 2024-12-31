@@ -12,7 +12,7 @@ const personColumns = [
     { label: "Token", fieldName: "Token__c", type: "text" },
     { label: "Health Status", fieldName: "Health_Status__c", type: "text" },
     { label: "Status Update Date", fieldName: "Status_Update_Date__c", type: "date" },
-    { label: "View", type: "button", initialWidth: 135, typeAttributes: { label: "View/Update", name: "view_details", title: "Person view" } }
+    { label: "View", type: "button", initialWidth: 135, typeAttributes: { label: "View/Update", name: "person_view_details", title: "Person view" } }
 ]
 
 const locationColumns = [
@@ -22,7 +22,7 @@ const locationColumns = [
     { label: "Pincode", fieldName: "Pincode__c", type: "text" },
     { label: "Address", fieldName: "Address__c", type: "text" },
     { label: "Status Update Date", fieldName: "Status_Update_Date__c", type: "date" },
-    { label: "View", type: "button", initialWidth: 135, typeAttributes: { label: "View/Update", name: "view_details", title: "Location View" } }
+    { label: "View", type: "button", initialWidth: 135, typeAttributes: { label: "View/Update", name: "location_view_details", title: "Location View" } }
 ]
 
 export default class RecentChanges extends LightningElement {
@@ -97,11 +97,23 @@ export default class RecentChanges extends LightningElement {
     handleRowAction(event) {
         const action = event.detail.action;
         const row = event.detail.row;
-        if(action.name == 'view_details') {
-            this.dispatchEvent(new CustomEvent('view', {
+        console.log('actionname: '+ action.name);
+        if(action.name == 'location_view_details') {
+            this.dispatchEvent(new CustomEvent('locationview', {
                 detail: {
                     recordId : row.Id,
-                    status : row.Status__c
+                    status : row.Status__c,
+                    viewname: action.name
+                }
+            }))
+        }
+
+        if(action.name == 'person_view_details') {
+            this.dispatchEvent(new CustomEvent('personview', {
+                detail: {
+                    recordId : row.Id,
+                    status : row.Health_Status__c,
+                    viewname: action.name
                 }
             }))
         }

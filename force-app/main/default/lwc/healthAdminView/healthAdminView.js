@@ -4,8 +4,8 @@ import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 export default class HealthAdminView extends LightningElement {
 
     tabName = '';
-    locationId;
-    status;
+    viewRecordId;
+    viewStatus;
 
     handleActive(event) {
         const name = event.target.value;
@@ -19,15 +19,19 @@ export default class HealthAdminView extends LightningElement {
 
 
     viewDetail(event) {
-        this.locationId = event.detail.recordId;
-        this.status = event.detail.status;
-        console.log('In admin: '+ this.status);
-        //try{
-            this.template.querySelector('c-location-view').locationStatus(locationId);
-        //} catch(error) {
-            //console.log(error);
-        //}
-        console.log('Okay!')
+        this.viewRecordId = event.detail.recordId;
+        this.viewStatus = event.detail.status;
+        const viewname = event.detail.viewname;
+        console.log('In admin: '+this.viewRecordId +' '+ this.viewStatus);
+        try{
+            if(viewname=='location_view_details') {
+                this.template.querySelector('c-location-view').locationStatusColor();
+            } else {
+                this.template.querySelector('c-person-view').personStatusColor();
+            }
+        } catch(error) {
+            this.showMessage('Error', 'Something went wrong!', 'error');
+        }
     }
 
     showMessage(title, msg, variant) {
