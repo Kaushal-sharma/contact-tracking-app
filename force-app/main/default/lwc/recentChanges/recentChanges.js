@@ -47,7 +47,7 @@ export default class RecentChanges extends LightningElement {
             this.data = response;
         })
         .catch((error) => {
-            this.showMessage(error.statusText, error, 'error');
+            this.showMessage(error.statusText, error.body.message, 'error');
         })
     }
 
@@ -57,7 +57,7 @@ export default class RecentChanges extends LightningElement {
             this.data = response;
         })
         .catch((error) => {
-            this.showMessage(error.statusText, error, 'error');
+            this.showMessage(error.statusText, error.body.message, 'error');
         })
     }
 
@@ -77,7 +77,7 @@ export default class RecentChanges extends LightningElement {
                     console.log(this.data);
                 })
                 .catch((error) => {
-                    this.showMessage(error.statusText, error, 'error');
+                    this.showMessage('Error', error.body.message, 'error');
                 })
             } 
             else {
@@ -88,7 +88,7 @@ export default class RecentChanges extends LightningElement {
                     console.log(this.data);
                 })
                 .catch((error) => {
-                    this.showMessage(error.statusText, error, 'error');
+                    this.showMessage('Error', error.body.message, 'error');
                 })
             }
         } 
