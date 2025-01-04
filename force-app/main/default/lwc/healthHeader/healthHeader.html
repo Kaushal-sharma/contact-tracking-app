@@ -4,19 +4,28 @@
         <lightning-tile label="Contact Tracing" type="media">
             <lightning-icon slot="media" icon-name="standard:groups"></lightning-icon>
                 <span class="slds-page-header__title">{tabName}</span>
-                <span><lightning-button label="New" slot="actions" onclick={createNewRecord} style="float:right; margin-top:-20px;"></lightning-button></span>
+                <span><lightning-button label="New" onclick={createNewRecord} style="float:right; margin:-40px 45px 0px 0px;"></lightning-button></span>
+                <span><lightning-button-icon icon-name="action:refresh" variant="brand" alternative-text="Refresh" class="slds-m-left_xx-small" title="Refresh" onclick={refreshAllData} style="float:right; margin-top:-40px;"></lightning-button-icon></span>
         </lightning-tile>
     </div>
     
     <lightning-layout class="lgc-bg-white">
-        <template for:each={healthStatus} for:item="status">
-            <span key={status.id} class="slds-m-left_medium">
-                <lightning-layout-item flexibility="auto, no-grow" padding="around-small">
-                    <div class={status.color}>{status.label}</div>
-                    <div>{status.count}</div>
-                </lightning-layout-item>
-            </span>
-        </template>
+        <lightning-layout-item flexibility="auto, no-grow" padding="around-small">
+            <div class="text-Green">Green</div>
+            <div>{statusInfo.Green}</div>
+        </lightning-layout-item>
+        <lightning-layout-item flexibility="auto, no-grow" padding="around-small">
+            <div class="text-Yellow">Yellow</div>
+            <div>{statusInfo.Yellow}</div>
+        </lightning-layout-item>
+        <lightning-layout-item flexibility="auto, no-grow" padding="around-small">
+            <div class="text-Orange">Orange</div>
+            <div>{statusInfo.Orange}</div>
+        </lightning-layout-item>
+        <lightning-layout-item flexibility="auto, no-grow" padding="around-small">
+            <div class="text-Red">Red</div>
+            <div>{statusInfo.Red}</div>
+        </lightning-layout-item>
     </lightning-layout> 
 
 </template>
