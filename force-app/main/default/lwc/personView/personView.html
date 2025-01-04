@@ -1,12 +1,15 @@
 <template>
-    <lightning-card class="slds-p-around_xx-small">
-        <div class={backgroundColor}>
-            <template lwc:if={personId}>
-                <lightning-record-form record-id={personId} object-api-name="Person__c" fields={fields}  columns="1" mode="readonly"></lightning-record-form>
+    <div class={backgroundColor}>
+        <template lwc:if={personId}>
+            <lightning-record-form record-id={personId} object-api-name="Person__c" fields={fields}  columns="1" mode="readonly"></lightning-record-form>
+            <template lwc:if={statusIsRed}>
+                <lightning-button label="Update to Red Status" variant="destructive" onclick={updateToRedStatus}></lightning-button>
             </template>
-            <template lwc:else>
+        </template>
+        <template lwc:else>
+            <div style="text-align:center">
                 <p>No reocrd select</p>
-            </template>
-        </div>
-        </lightning-card>
+            </div>
+        </template>
+    </div>
 </template>

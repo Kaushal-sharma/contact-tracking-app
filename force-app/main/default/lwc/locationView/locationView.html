@@ -1,12 +1,12 @@
 <template>
-    <lightning-card class="slds-p-around_xx-small">
-        <div class={backgroundColor}>
-            <template lwc:if={locationId}>
-                <lightning-record-form record-id={locationId} object-api-name="Location__c" fields={fields}  columns="1" mode="readonly"></lightning-record-form>
-            </template>
-            <template lwc:else>
+    <div class={backgroundColor}>
+        <template lwc:if={locationId}>
+            <lightning-record-form record-id={locationId} object-api-name="Location__c" fields={fields}  columns="1" mode="readonly"></lightning-record-form>
+        </template>
+        <template lwc:else>
+            <div style="text-align:center">
                 <p>No reocrd select</p>
-            </template>
-        </div>
-        </lightning-card>
+            </div>
+        </template>
+    </div>
 </template>

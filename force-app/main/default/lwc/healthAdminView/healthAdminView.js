@@ -10,11 +10,10 @@ export default class HealthAdminView extends LightningElement {
     handleActive(event) {
         const name = event.target.value;
         this.tabName = name.charAt(0).toUpperCase() + String(name).slice(1);
-        if(this.tabName == 'Location') {
+        if(this.tabName == 'Location')
             this.template.querySelector('c-health-header').getLocationStatus();
-        } else {
+        else
             this.template.querySelector('c-health-header').getPersonStatus();
-        }
     }
 
 
@@ -22,16 +21,10 @@ export default class HealthAdminView extends LightningElement {
         this.viewRecordId = event.detail.recordId;
         this.viewStatus = event.detail.status;
         const viewname = event.detail.viewname;
-        console.log('In admin: '+this.viewRecordId +' '+ this.viewStatus);
-        try{
-            if(viewname=='location_view_details') {
-                this.template.querySelector('c-location-view').locationStatusColor();
-            } else {
-                this.template.querySelector('c-person-view').personStatusColor();
-            }
-        } catch(error) {
-            this.showMessage('Error', 'Something went wrong!', 'error');
-        }
+        if(viewname=='location_view_details')
+            this.template.querySelector('c-location-view').locationStatusColor(this.viewRecordId, this.viewStatus);
+        else
+            this.template.querySelector('c-person-view').personStatusColor(this.viewRecordId, this.viewStatus);
     }
 
     showMessage(title, msg, variant) {

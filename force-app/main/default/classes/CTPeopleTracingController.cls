@@ -1,12 +1,9 @@
 public with sharing class CTPeopleTracingController {
-    public CTPeopleTracingController() {
-
-    }
 
     @AuraEnabled
     public static List<People_Tracing__c> getTraces(String personId)  {
         try {
-            List<People_Tracing__c> peopleList = [SELECT Id, Name, Contact_Date__c, Contact_Type__c, Person_1__c, Person_1__r.Health_Status__c, Person_1__r.Token__c, Person_2__c FROM People_Tracing__c WHERE Person_1__c=: personId AND Person_2__c =: personId ORDER BY Contact_Date__c DESC];
+            List<People_Tracing__c> peopleList = [SELECT Id, Name, Contact_Date__c, Contact_Type__c, Person_1__c, Person_1__r.Health_Status__c, Person_1__r.Token__c, Person_2__c, Person_2__r.Health_Status__c, Person_2__r.Token__c FROM People_Tracing__c WHERE (Person_1__c =:personId OR Person_2__c =:personId) AND Contact_Date__c = LAST_N_DAYS:30 ORDER BY Contact_Date__c DESC];
             return peopleList;
         } catch(Exception e) {
             throw new AuraHandledException(e.getMessage());
@@ -24,11 +21,14 @@ public with sharing class CTPeopleTracingController {
                 personIds.add(traces.Person_1__c);
                 personIds.add(traces.Person_2__c);
             }
+
+            System.debug('personIds: '+ personIds);
             
             //SELECT Id, Name, Contact_Date__c, Contact_Type__c, Person_1__c, Person_2__c, Person_1__r.Name, Person_2__r.Name FROM People_Tracing__c
             //This query get those records which matching both personids(person1 and person2)
             List<People_Tracing__c> existingRecords = [SELECT Id, Person_1__c, Person_2__c FROM People_Tracing__c WHERE Person_1__c IN : personIds OR Person_2__c IN : personIds];
 
+            System.debug('Find exist: '+ existingRecords);
             if(existingRecords.size() > 0 && existingRecords != null) {
                 for(People_Tracing__c trace : existingRecords) {
                     if(!mapOfExistingRecords.containsKey(trace.Person_1__c)) {
@@ -48,6 +48,7 @@ public with sharing class CTPeopleTracingController {
                     }
                 }
             }
+            System.debug('duplicates: '+ duplicates);
             return duplicates;
         } catch (Exception e) {
             throw new AuraHandledException(e.getMessage());

@@ -1,12 +1,9 @@
 public with sharing class CTLocationTracingController {
-    public CTLocationTracingController() {
-
-    }
-
+  
     @AuraEnabled
     public static List<Location_Tracing__c> getVisitors(String locVisitorId){
         try {
-            List<Location_Tracing__c> locVisitorList = [SELECT Id, Person__r.Token__c, Person__r.Health_Status__c, Location__c, Visit_Date__c FROM Location_Tracing__c WHERE Id=:locVisitorId ORDER BY Visit_Date__c DESC];
+            List<Location_Tracing__c> locVisitorList = [SELECT Id, Person__r.Name, Person__r.Token__c, Person__r.Health_Status__c, Location__c, Visit_Date__c FROM Location_Tracing__c WHERE Location__r.Id=:locVisitorId ORDER BY Visit_Date__c DESC];
             return locVisitorList;
         } catch (Exception e) {
             throw new AuraHandledException(e.getMessage());

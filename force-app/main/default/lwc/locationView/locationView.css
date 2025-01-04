@@ -1,15 +1,15 @@
 .background-Red {
-    border-top: 8px solid red;
+    border-top: 8px solid #ea001e;
 }
 
 .background-Orange {
-    border-top: 8px solid orange;
+    border-top: 8px solid #fe9339;
 }
 
 .background-Green {
-    border-top: 8px solid green;
+    border-top: 8px solid #3ba755;
 }
 
 .background-Yellow {
-    border-top: 8px solid #baba00;
+    border-top: 8px solid #ffce2d;
 }
