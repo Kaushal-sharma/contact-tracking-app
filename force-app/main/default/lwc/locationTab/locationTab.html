@@ -1,0 +1,62 @@
+<template>
+    <div class="slds-box" style="background-color:white;">
+        <lightning-layout>
+            <lightning-layout-item alignment-bump="left">
+                <div class="slds-p-right_medium" style="display:flex;">
+                    <lightning-input type="text" name="recordId" label="User Id" variant="label-hidden" value={recordId} onchange={searchChangeHandler}></lightning-input>
+                    <lightning-button class="slds-m-left_medium" label="Search User" title="Search User" onclick={getUserInfo} variant="neutral"></lightning-button>
+                </div>
+            </lightning-layout-item>
+        </lightning-layout>
+    </div>
+
+    <template lwc:if={userFound}>
+
+        <lightning-layout>
+            <lightning-layout-item size="12" padding="around-small">   
+                <lightning-layout class="slds-align_absolute-center">
+                    <lightning-layout-item size="6" class="card-shadow" style="background-color:white;padding:0px 0px 15px 0px; border-radius:15px 15px 15px 15px; ">
+
+                        <div class="slds-p-around_small" style={styleDynamic}>
+                            <p>Location: {locationInfo.name} Status: {locationInfo.status}</p>
+                        </div>
+                        <lightning-layout class="slds-border_bottom slds-m-bottom_small" style="background-color: rgb(244 244 244);">
+                            <lightning-layout-item padding="around-small">
+                                <div class="header-column">
+                                    <p class="field-title" title="Field 1">Pincode</p>
+                                    <p>{locationInfo.pincode}</p>
+                                </div>
+                            </lightning-layout-item>
+                            <lightning-layout-item padding="around-small">
+                                <div class="header-column">
+                                    <p class="field-title" title="Field 1">Red Score</p>
+                                    <p>{locationInfo.redScore}</p>
+                                </div>
+                            </lightning-layout-item>
+                            <lightning-layout-item padding="around-small">
+                                <div class="header-column">
+                                    <p class="field-title" title="Field 3">Token</p>
+                                    <p>{locationInfo.token}</p>
+                                </div>
+                            </lightning-layout-item>
+                            <lightning-layout-item padding="around-small">
+                                <div class="header-column">
+                                    <p class="field-title" title="Field 4">Status Update On</p>
+                                    <p>{locationInfo.statusUpdateOn}</p>
+                                </div>
+                            </lightning-layout-item>
+                            <lightning-layout-item padding="around-small">
+                                <div class="header-column">
+                                    <p class="field-title" title="Field 4">Contact in Last 30 Days</p>
+                                    <p>{locationInfo.contactCount}</p>
+                                </div>
+                            </lightning-layout-item>
+                        </lightning-layout>
+
+                        <lightning-datatable key-field="id" data={locationInfo.contacts} columns={columns} hide-checkbox-column="true"></lightning-datatable>
+                    </lightning-layout-item>
+                </lightning-layout>
+            </lightning-layout-item>
+        </lightning-layout>
+    </template>
+</template>
