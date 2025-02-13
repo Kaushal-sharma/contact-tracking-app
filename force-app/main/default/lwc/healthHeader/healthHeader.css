@@ -11,18 +11,18 @@
 }
 
 .text-Green {
-    color:green;
+    color:green !important;
     font-weight: 600;
 }
 .text-Orange {
-    color:orange;
+    color:orange !important;
     font-weight: 600;
 }
 .text-Yellow {
-    color:rgb(238, 238, 0);
+    color:rgb(238, 238, 0) !important;
     font-weight: 600;
 }
 .text-Red {
-    color:red;
+    color:red !important;
     font-weight: 600;
 }
