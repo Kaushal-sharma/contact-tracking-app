@@ -1,7 +1,8 @@
 <template>
+    <div class="container" style="background-color:white;">
         <lightning-layout multiple-rows="true">
             <lightning-layout-item size="12">
-                <c-health-header tab-name={tabName}></c-health-header>
+                <c-health-header tab-name={tabName} onrefresh={refreshData}></c-health-header>
             </lightning-layout-item>
         </lightning-layout>
 
@@ -13,7 +14,7 @@
                             <c-recent-changes scope="Person" onpersonview={viewDetail} ></c-recent-changes>
                         </lightning-layout-item>
                         <lightning-layout-item size="4" padding="horizontal-small">
-                            <c-person-view></c-person-view>
+                            <c-person-view onpersonupdate={refreshData}></c-person-view>
                         </lightning-layout-item>
                     </lightning-layout>
                 </lightning-tab>
@@ -24,10 +25,11 @@
                             <c-recent-changes scope="Location" onlocationview={viewDetail}></c-recent-changes>
                         </lightning-layout-item>
                         <lightning-layout-item size="4" padding="horizontal-small"> 
-                            <c-location-view></c-location-view>
+                            <c-location-view onlocationupdate={refreshData}></c-location-view>
                         </lightning-layout-item>
                     </lightning-layout>
                 </lightning-tab>
             </lightning-tabset>
         </lightning-layout-item>
+    </div>
 </template>

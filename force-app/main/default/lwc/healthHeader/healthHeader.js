@@ -26,7 +26,6 @@ export default class HealthHeader extends NavigationMixin(LightningElement) {
         getLocationHealthStatus()
         .then((response) => {
             this.statusInfo = response;
-            console.log(this.statusInfo);
         })
         .catch((error) => {
             this.showMessage(error.statusText, error, 'error');
@@ -45,7 +44,8 @@ export default class HealthHeader extends NavigationMixin(LightningElement) {
     }
 
     refreshAllData() {
-        
+        const refreshEvent = new CustomEvent('refresh');
+        this.dispatchEvent(refreshEvent);
     }
 
     showMessage(title, msg, variant) {

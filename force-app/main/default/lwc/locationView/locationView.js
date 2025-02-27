@@ -1,4 +1,5 @@
 import { LightningElement, api} from 'lwc';
+import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 
 export default class LocationView extends LightningElement {
     
@@ -11,6 +12,22 @@ export default class LocationView extends LightningElement {
         this.locationId = id;
         this.backgroundColor = `background-${status}`;
         console.log(this.backgroundColor);
+    }
+
+    successHandler() {
+        const refreshEvent = new CustomEvent('locationupdate');
+        this.dispatchEvent(refreshEvent);
+        this.showMessage('Success', 'Location Updated', 'success');
+    }
+
+    showMessage(title, msg, variant) {
+        this.dispatchEvent(
+            new ShowToastEvent({
+                title: title,
+                message: msg,
+                variant: variant
+            })
+        )
     }
         
 }

@@ -16,7 +16,6 @@ export default class HealthAdminView extends LightningElement {
             this.template.querySelector('c-health-header').getPersonStatus();
     }
 
-
     viewDetail(event) {
         this.viewRecordId = event.detail.recordId;
         this.viewStatus = event.detail.status;
@@ -25,6 +24,14 @@ export default class HealthAdminView extends LightningElement {
             this.template.querySelector('c-location-view').locationStatusColor(this.viewRecordId, this.viewStatus);
         else
             this.template.querySelector('c-person-view').personStatusColor(this.viewRecordId, this.viewStatus);
+    }
+
+    refreshData() {
+        console.log('refresh tab: '+ this.tabName);
+        if(this.tabName == 'Location')
+            this.template.querySelector('c-recent-changes').recentLocationHealthStatus();
+        else
+            this.template.querySelector('c-recent-changes').recentPersonHealthStatus();
     }
 
     showMessage(title, msg, variant) {

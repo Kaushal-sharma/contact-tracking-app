@@ -1,6 +1,6 @@
 <template>
     <div class="c-container">
-        <lightning-card title="Recent Updates">
+        <lightning-card title={totalRecords}>
                 <div onkeyup={handleKeyUp} slot="actions">
                     <lightning-input name="search" label="Hit 'enter' to search" aura-id="enter-search" type="search" placeholder="Search here..." onkeyup={handleKeyUp}></lightning-input>
                 </div>

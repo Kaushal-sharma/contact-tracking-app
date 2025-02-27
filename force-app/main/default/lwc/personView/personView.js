@@ -1,4 +1,5 @@
 import { LightningElement, api} from 'lwc';
+import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import updateToRedStatus from '@salesforce/apex/PersonViewController.updateHealthStatus';
 
 export default class PersonView extends LightningElement {
@@ -27,6 +28,12 @@ export default class PersonView extends LightningElement {
         .catch((error) => {
             this.showMessage('Error', error.body.message, 'error');
         })
+    }
+
+    successHandler() {
+        const refreshEvent = new CustomEvent('personupdate');
+        this.dispatchEvent(refreshEvent);
+        this.showMessage('Success', 'Person Updated', 'success');
     }
 
     showMessage(title, msg, variant) {

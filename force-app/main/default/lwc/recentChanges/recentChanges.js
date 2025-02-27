@@ -31,6 +31,10 @@ export default class RecentChanges extends LightningElement {
     columns =[];
     data = [];
 
+    get totalRecords() {
+        return this.data.length>0 ? `Recent Updates (${this.data.length})`: `Recent Updates (0)`;
+    }
+
     connectedCallback() {
         if(this.scope == 'Location') {
             this.columns = locationColumns;
@@ -41,6 +45,7 @@ export default class RecentChanges extends LightningElement {
         }
     }
 
+    @api
     recentPersonHealthStatus() {
         getRecentPersonHealthChanges()
         .then((response) => {
@@ -51,6 +56,7 @@ export default class RecentChanges extends LightningElement {
         })
     }
 
+    @api
     recentLocationHealthStatus() {
         getRecentLocationHealthChanges()
         .then((response) => {
@@ -77,7 +83,7 @@ export default class RecentChanges extends LightningElement {
                     console.log(this.data);
                 })
                 .catch((error) => {
-                    this.showMessage('Error', error.body.message, 'error');
+                    this.showMessage(error.statusText, error, 'error');
                 })
             } 
             else {
@@ -88,7 +94,7 @@ export default class RecentChanges extends LightningElement {
                     console.log(this.data);
                 })
                 .catch((error) => {
-                    this.showMessage('Error', error.body.message, 'error');
+                    this.showMessage(error.statusText, error, 'error');
                 })
             }
         } 
